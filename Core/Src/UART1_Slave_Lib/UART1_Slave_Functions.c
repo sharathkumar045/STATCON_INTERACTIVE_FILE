@@ -595,21 +595,20 @@ void UART1_Use_Received_Data_C(void)
 	}
 
 
-	Calibration_Var = Calibration_Temp;
-//	if((Calibration_Temp.Error==0)&&(Switch_Is_ON))
-//	if((Calibration_Temp.Error==0))
-//	{
-//		Calibration_Var = Calibration_Temp;
-//		Calibration_Temp.OK = 1;
-//		Calibration_Var.OK = 1;
-//	}
-//	else
-//	{
-//		Calibration_Var = Calibration_Temp;
-//		Calibration_Temp.OK = 0;
-//		Calibration_Var.OK = 0;
-//		Calibration_Temp.Error=1;
-//	}
+//	Calibration_Var = Calibration_Temp;
+	if((Calibration_Temp.Error==0)&&(Switch_Is_ON))
+	if((Calibration_Temp.Error==0))
+	{
+		Calibration_Var = Calibration_Temp;
+		Calibration_Temp.OK = 1;
+		Calibration_Var.OK = 1;
+	}
+	else
+	{
+		Calibration_Temp.OK = 0;
+		Calibration_Var.OK = 0;
+		Calibration_Temp.Error=1;
+	}
 
 }
 
@@ -905,14 +904,14 @@ void UART1_Populate_Txdata_Array_With_Message_m(void)
         if(Norm_ADC.Mains_Power_Mean >= 0)
 		{
 		  X_UART1 		= (Norm_ADC.Mains_Power_Mean)>>12;
-//		  X_UART1		= (X_UART1*Calibration_Var.I_Mains_CT)>>11;
-//		  X_UART1		= (X_UART1*Calibration_Var.V_Mains)>>11;
+		  X_UART1		= (X_UART1*Calibration_Var.I_Mains_CT)>>11;
+		  X_UART1		= (X_UART1*Calibration_Var.V_Mains)>>11;
 		}
 		else
 		{
 		  X_UART1 		= (-Norm_ADC.Mains_Power_Mean)>>12;
-//		  X_UART1		= (X_UART1*Calibration_Var.I_Mains_CT)>>11;
-//		  X_UART1		= (X_UART1*Calibration_Var.V_Mains)>>11;
+		  X_UART1		= (X_UART1*Calibration_Var.I_Mains_CT)>>11;
+		  X_UART1		= (X_UART1*Calibration_Var.V_Mains)>>11;
 		}
 
 		UART1_Txdata[19]=(0x00FF & X_UART1);

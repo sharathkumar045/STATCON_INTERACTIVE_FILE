@@ -144,12 +144,12 @@ void ADC_Avg_And_RMS_Cal()
 	 if(Cntr.ADC_Avg>Othr.Sine_Length)
 	 {
 		 Norm_Avg.V_PV 		= ((Norm_Avg.V_PV_Sum*(Norm_Avg.Multiplier))>>18);
-		 Norm_Avg.V_PV = 2550;
 		 Norm_Avg.V_PV 		= (Norm_Avg.V_PV * Calibration_Var.V_PV)>>11;
-
 		 Norm_Avg.I_PV 		= ((Norm_Avg.I_PV_Sum*(Norm_Avg.Multiplier))>>18);            // this value can be used in the while function for reading current values
-		 Norm_Avg.I_PV = 1990;
 		 Norm_Avg.I_PV 		= (Norm_Avg.I_PV * Calibration_Var.I_PV)>>11;
+
+//		 Norm_Avg.V_PV 		= 1097;
+//		 Norm_Avg.I_PV      = 435;
 
 		 Norm_Avg.V_Batt 	= ((Norm_Avg.V_Batt_Sum*(Norm_Avg.Multiplier))>>18);
 		 Norm_Avg.V_Batt 	= (Norm_Avg.V_Batt * Calibration_Var.V_Batt)>>11;
@@ -180,6 +180,9 @@ void ADC_Avg_And_RMS_Cal()
 	 Norm_ADC.V_Mains_AC 			= -((Mains_Volt_ADC-Inv_Cntrl.V_Mains_Calib_Offset)<<1);
 	 Norm_ADC.I_Inv_Pri_AC 			= ((I_Inv_pri_ADC - Inv_Cntrl.I_Inv_Pri_Calib_Offset )<<1); // shifting the ADC values according to offset (500/4096)
 	 Norm_ADC.I_Mains_CT 			= ((I_Mains_CT_ADC - Inv_Cntrl.I_Inv_CT_Calib_Offset )<<1);
+
+//	 Norm_ADC.V_Mains_AC 		= 1097;
+//	 Norm_ADC.I_Inv_Pri_AC      = 435;
 
 	 Norm_ADC.Mains_Power_Sum 		= ( Norm_ADC.Mains_Power_Sum +(Norm_ADC.V_Mains_AC* Norm_ADC.I_Inv_Pri_AC));
 

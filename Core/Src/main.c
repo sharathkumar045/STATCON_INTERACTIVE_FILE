@@ -133,6 +133,8 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+//	 Norm_Avg.V_PV = 1097;
+//	 Norm_Avg.I_PV = 435;
 
 	 UART1_Enable_Receive_Interrupt; //Enabling the receive interrupt
 	 UART1_Enable;
@@ -184,7 +186,7 @@ int main(void)
 //					Energy_Calculation_For_GSM_Card();
 				}
 			}
-
+//			Energy_Calculation();
 			PV_KWhr_Calculation();
 
 			Energy_Calculation_With_Mains_CT(); // Mains export or import energy calculation
