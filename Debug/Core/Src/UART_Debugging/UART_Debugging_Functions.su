@@ -1,0 +1,3 @@
+../Core/Src/UART_Debugging/UART_Debugging_Functions.c:19:6:UART_Debugging_Send_Function_Inside_1ms_Timer_Interrupt	8	static
+../Core/Src/UART_Debugging/UART_Debugging_Functions.c:44:6:UART_Debugging_Populate_Txdata_Array_With_Message_Debug_Data	8	static
+../Core/Src/UART_Debugging/UART_Debugging_Functions.c:174:6:UART_Debugging_Slave_Variables_Init	8	static
