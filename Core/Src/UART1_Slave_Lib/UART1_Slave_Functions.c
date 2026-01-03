@@ -595,20 +595,20 @@ void UART1_Use_Received_Data_C(void)
 	}
 
 
-//	Calibration_Var = Calibration_Temp;
-	if((Calibration_Temp.Error==0)&&(Switch_Is_ON))
-	if((Calibration_Temp.Error==0))
-	{
-		Calibration_Var = Calibration_Temp;
-		Calibration_Temp.OK = 1;
-		Calibration_Var.OK = 1;
-	}
-	else
-	{
-		Calibration_Temp.OK = 0;
-		Calibration_Var.OK = 0;
-		Calibration_Temp.Error=1;
-	}
+	Calibration_Var = Calibration_Temp;
+//	if((Calibration_Temp.Error==0)&&(Switch_Is_ON))
+//	if((Calibration_Temp.Error==0))
+//	{
+//		Calibration_Var = Calibration_Temp;
+//		Calibration_Temp.OK = 1;
+//		Calibration_Var.OK = 1;
+//	}
+//	else
+//	{
+//		Calibration_Temp.OK = 0;
+//		Calibration_Var.OK = 0;
+//		Calibration_Temp.Error=1;
+//	}
 
 }
 
@@ -875,7 +875,7 @@ void UART1_Populate_Txdata_Array_With_Message_m(void)
 //        Norm_Avg.I_PV = 1990;
         UART1_Txdata[3] = (0x00FF & Norm_Avg.V_PV);
         UART1_Txdata[4] = ((0xFF00 & Norm_Avg.V_PV)>>8);
-
+// I PV
         UART1_Txdata[5] = (0x00FF & Norm_Avg.I_PV);
         UART1_Txdata[6] = ((0xFF00 & Norm_Avg.I_PV)>>8);
 
@@ -887,16 +887,16 @@ void UART1_Populate_Txdata_Array_With_Message_m(void)
         //PV_KWH
         UART1_Txdata[9]	=(0x00FF & Metering.PV_KWH);
         UART1_Txdata[10]=((0xFF00 & Metering.PV_KWH)>>8);
-
+// V mains
         UART1_Txdata[11]=(0x00FF & Norm_Rms.V_Mains);
         UART1_Txdata[12]=((0xFF00 & Norm_Rms.V_Mains)>>8);
-
+// I inv
         UART1_Txdata[13]=(0x00FF & Norm_Rms.I_Inv_Pri);
         UART1_Txdata[14]=((0xFF00 & Norm_Rms.I_Inv_Pri)>>8);
 
         UART1_Txdata[15]=(0x00FF & Norm_Rms.I_Mains_CT);
         UART1_Txdata[16]=((0xFF00 & Norm_Rms.I_Mains_CT)>>8);
-
+// F Grid
         UART1_Txdata[17]=(0x00FF & Inv_Cntrl.Time_Period_Grid);
         UART1_Txdata[18]=((0xFF00 & Inv_Cntrl.Time_Period_Grid)>>8);
 

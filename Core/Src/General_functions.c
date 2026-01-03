@@ -146,6 +146,7 @@ void ADC_Avg_And_RMS_Cal()
 		 Norm_Avg.V_PV 		= ((Norm_Avg.V_PV_Sum*(Norm_Avg.Multiplier))>>18);
 		 Norm_Avg.V_PV 		= (Norm_Avg.V_PV * Calibration_Var.V_PV)>>11;
 		 Norm_Avg.I_PV 		= ((Norm_Avg.I_PV_Sum*(Norm_Avg.Multiplier))>>18);            // this value can be used in the while function for reading current values
+		 Norm_Avg.I_PV      = 435;
 		 Norm_Avg.I_PV 		= (Norm_Avg.I_PV * Calibration_Var.I_PV)>>11;
 
 //		 Norm_Avg.V_PV 		= 1097;

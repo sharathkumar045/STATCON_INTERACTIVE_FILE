@@ -6,7 +6,7 @@
 ../Core/Src/UART1_Slave_Lib/UART1_Slave_Functions.c:101:15:UART1_crcFast	2
 ../Core/Src/UART1_Slave_Lib/UART1_Slave_Functions.c:131:6:UART1_Use_Received_Data_S	4
 ../Core/Src/UART1_Slave_Lib/UART1_Slave_Functions.c:217:6:UART1_Recieved_Settings_Error_Check	37
-../Core/Src/UART1_Slave_Lib/UART1_Slave_Functions.c:473:6:UART1_Use_Received_Data_C	22
+../Core/Src/UART1_Slave_Lib/UART1_Slave_Functions.c:473:6:UART1_Use_Received_Data_C	19
 ../Core/Src/UART1_Slave_Lib/UART1_Slave_Functions.c:615:6:UART1_Use_Received_Data_M	1
 ../Core/Src/UART1_Slave_Lib/UART1_Slave_Functions.c:620:6:UART1_Use_Received_Data_R	1
 ../Core/Src/UART1_Slave_Lib/UART1_Slave_Functions.c:647:6:UART1_Receive_ISR_Program	22
