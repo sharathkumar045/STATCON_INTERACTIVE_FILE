@@ -144,9 +144,10 @@ void ADC_Avg_And_RMS_Cal()
 	 if(Cntr.ADC_Avg>Othr.Sine_Length)
 	 {
 		 Norm_Avg.V_PV 		= ((Norm_Avg.V_PV_Sum*(Norm_Avg.Multiplier))>>18);
+//		 Norm_Avg.V_PV 		= 1097;
 		 Norm_Avg.V_PV 		= (Norm_Avg.V_PV * Calibration_Var.V_PV)>>11;
 		 Norm_Avg.I_PV 		= ((Norm_Avg.I_PV_Sum*(Norm_Avg.Multiplier))>>18);            // this value can be used in the while function for reading current values
-		 Norm_Avg.I_PV      = 435;
+//		 Norm_Avg.I_PV      = 435;
 		 Norm_Avg.I_PV 		= (Norm_Avg.I_PV * Calibration_Var.I_PV)>>11;
 
 //		 Norm_Avg.V_PV 		= 1097;
@@ -181,6 +182,7 @@ void ADC_Avg_And_RMS_Cal()
 	 Norm_ADC.V_Mains_AC 			= -((Mains_Volt_ADC-Inv_Cntrl.V_Mains_Calib_Offset)<<1);
 	 Norm_ADC.I_Inv_Pri_AC 			= ((I_Inv_pri_ADC - Inv_Cntrl.I_Inv_Pri_Calib_Offset )<<1); // shifting the ADC values according to offset (500/4096)
 	 Norm_ADC.I_Mains_CT 			= ((I_Mains_CT_ADC - Inv_Cntrl.I_Inv_CT_Calib_Offset )<<1);
+	 Norm_ADC.Earth_Fault           = ((Earth_Fault_ADC - Inv_Cntrl.Earth_Fault_Calib_Offset)<<1);
 
 //	 Norm_ADC.V_Mains_AC 		= 1097;
 //	 Norm_ADC.I_Inv_Pri_AC      = 435;
@@ -190,6 +192,7 @@ void ADC_Avg_And_RMS_Cal()
 	 Norm_Rms.V_Mains_Sq_Sum 		= (Norm_Rms.V_Mains_Sq_Sum + (Norm_ADC.V_Mains_AC*Norm_ADC.V_Mains_AC));     // using Grid_V_Add we store sum of all voltage square values of  191 voltages
 	 Norm_Rms.I_Inv_Pri_Sq_Sum 		= (Norm_Rms.I_Inv_Pri_Sq_Sum + (Norm_ADC.I_Inv_Pri_AC*Norm_ADC.I_Inv_Pri_AC));
 	 Norm_Rms.I_Mains_CT_Sq_Sum 	= (Norm_Rms.I_Mains_CT_Sq_Sum + (Norm_ADC.I_Mains_CT*Norm_ADC.I_Mains_CT));
+	 Norm_Rms.Earth_Fault_Sq_Sum    = (Norm_Rms.Earth_Fault_Sq_Sum + (Norm_ADC.Earth_Fault*Norm_ADC.Earth_Fault));
 
 	 Cntr.Mean_Sq_Sum 				= Cntr.Mean_Sq_Sum+1;
 
@@ -198,6 +201,7 @@ void ADC_Avg_And_RMS_Cal()
 		 Norm_Rms.V_Mains_Mean_Sq 	= (((uint64_t)Norm_Rms.V_Mains_Sq_Sum*Norm_Avg.Multiplier))>>18;           // division by 192 has been shifted
 		 Norm_Rms.I_Inv_Pri_Mean_Sq = (((uint64_t)Norm_Rms.I_Inv_Pri_Sq_Sum*Norm_Avg.Multiplier)>>18);
 		 Norm_Rms.I_Mains_CT_Mean_Sq = (((uint64_t)Norm_Rms.I_Mains_CT_Sq_Sum*Norm_Avg.Multiplier)>>18);
+		 Norm_Rms.Earth_Fault_Mean_Sq = (((uint64_t)Norm_Rms.Earth_Fault_Sq_Sum *Norm_Avg.Multiplier)>>18);
 
 		 if(Norm_ADC.Mains_Power_Sum >= 0)
 		 {
@@ -226,6 +230,7 @@ void ADC_Avg_And_RMS_Cal()
 		 Norm_Rms.V_Mains_Sq_Sum= 0;
 		 Norm_Rms.I_Inv_Pri_Sq_Sum = 0;
 		 Norm_Rms.I_Mains_CT_Sq_Sum = 0;
+		 Norm_Rms.Earth_Fault_Sq_Sum = 0;
 
 		 Inv_Cntrl.RMS_Sqrt_Calc_Request=1;
 		 Cntr.Mean_Sq_Sum=1;
@@ -308,7 +313,7 @@ void Cntrs_Incrmnt_Fn_for_100us_ISR()
 
 	if(Othr.System_Off_Timer_Limit_Cycle_Count >= 7)
 	{
-		Inv_Cntrl.State = 0;   // go to state 0 and stay there
+		Inv_Cntrl.State = 0;                       // go to state 0 and stay there
 		Inv_Cntrl.First_Time_State_Entry = 1;
 		Inverter_OFF();
 		MPPT_OFF();
@@ -317,7 +322,7 @@ void Cntrs_Incrmnt_Fn_for_100us_ISR()
 	}
 
 	Inv_Cntrl.Count = Inv_Cntrl.Count+1;      		// increment the count value
-	if(Inv_Cntrl.Count > Othr.Sine_Length) 					// if count is greater than 192 then it is reset to 1
+	if(Inv_Cntrl.Count > Othr.Sine_Length) 		    // if count is greater than 192 then it is reset to 1
 	{
 		Inv_Cntrl.Count = 1;
 	}
@@ -325,10 +330,10 @@ void Cntrs_Incrmnt_Fn_for_100us_ISR()
 	Cntr.Mppt_Loop = Cntr.Mppt_Loop+1;         		//this count is used for executing MPPT algorithm after a fixed delay depending on Mppt_Loop_Time_Sec
 	if(Cntr.Mppt_Loop > Two_Hundred_ms_Count)
 	{
-		Cntr.Mppt_Loop = Two_Hundred_ms_Count;           // we are limiting Cntr.Mppt_Loop so that it does not overflow
+		Cntr.Mppt_Loop = Two_Hundred_ms_Count;      // we are limiting Cntr.Mppt_Loop so that it does not overflow
 	}
 
-	if(Inv_Cntrl.Start_Ov_Temp_Cnt_Request == 1)  // This counter is used for the delay for temperature signal
+	if(Inv_Cntrl.Start_Ov_Temp_Cnt_Request == 1)    // This counter is used for the delay for temperature signal
 	{
 		Cntr.Over_Temp  = Cntr.Over_Temp +1;
 		if(Cntr.Over_Temp > Ten_Second_Count)
@@ -380,7 +385,7 @@ void Cntrs_Incrmnt_Fn_for_100us_ISR()
 		UART2_Send_Var.Count = 10;
 	}
 
-	Cntr.ZCD_Error = Cntr.ZCD_Error + 1;  										// this counter is used for detection of failure of grid
+	Cntr.ZCD_Error = Cntr.ZCD_Error + 1;  					// this counter is used for detection of failure of grid
 	if(Cntr.ZCD_Error >= 585)
 	{
 		Cntr.ZCD_Error = 585;
@@ -720,6 +725,40 @@ void Fast_Diagnostics()
 		}
 		Othr.Previous_Switch_State=1;
 	}
+
+
+//	if(Inv_Cntrl.State == 0)
+//	{
+//		if(!INV_SENSE_RELAY)
+//		{
+//			 Inv_Cntrl.State = 0;
+//			 Inv_Cntrl.First_Time_State_Entry = 1;
+//		}
+//
+//		if(!DC_Insulation_is_Not_Ok)
+//		{
+//			Inv_Cntrl.State = 0;
+//		    Inv_Cntrl.First_Time_State_Entry=1;
+//		}
+//
+//		if(Earth_Check_ADC_Out_Of_Limits)
+//		{
+//			Inv_Cntrl.State = 0;
+//			Inv_Cntrl.First_Time_State_Entry=1;
+//		}
+//	}
+//
+//	if(Norm_Rms.Earth_Fault > 30 ) //30AMP
+//	{
+//		Inverter_OFF();
+//		Inv_Cntrl.State = 0;
+//		Inv_Cntrl.First_Time_State_Entry=1;
+//
+//		MPPT_OFF();
+//		PV_Cntrl.State = 0;
+//		PV_Cntrl.First_Time_State_Entry=1;
+//
+//	}
 
 //	if(Driver_Supply_is_Not_Ok)  // if the drivers aren't getting power supply
 //	{
@@ -1223,6 +1262,7 @@ void Variable_Init()
 	Norm_Rms.I_Mains_CT 		= 0;
 	Norm_Rms.I_Mains_CT_Mean_Sq = 0;
 	Norm_Rms.I_Mains_CT_Sq_Sum 	= 0;
+	Norm_Rms.Earth_Fault_Mean_Sq= 0;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1493,7 +1533,7 @@ void Variable_Init()
 	Calibration_Temp.I_Batt 		= 2048;
 	Calibration_Temp.I_Inv 			= 2048;
 	Calibration_Temp.I_PV 			= 2048;
-	Calibration_Temp.V_Batt 		= 1912;// Due to request from statcon (kushal) 2048*56/60
+	Calibration_Temp.V_Batt 		= 2048;
 	Calibration_Temp.V_Inv 			= 2048;
 	Calibration_Temp.V_Mains 		= 2048;
 	Calibration_Temp.V_PV 			= 2048;
@@ -1503,12 +1543,13 @@ void Variable_Init()
 	Calibration_Var.I_Batt 			= 2050;
 	Calibration_Var.I_Inv 			= 2051;
 	Calibration_Var.I_PV 			= 2052;
-	Calibration_Var.V_Batt 			= 1912;
+	Calibration_Var.V_Batt 			= 1912;// Due to request from statcon (kushal) 2048*56/60
 	Calibration_Var.V_Inv 			= 2053;
 	Calibration_Var.V_Mains 		= 2054;
 	Calibration_Var.V_PV 			= 2055;
 	Calibration_Var.I_Mains_CT 		= 2048;
 	Calibration_Var.I_Inv_CT 		= 2048;
+	Calibration_Var.Earth_Fault     = 2048;
 
 	Calibration_Var.Copy_To_Flash_Rqst_V_Mains_Offset=0;
 

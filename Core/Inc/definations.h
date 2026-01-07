@@ -25,6 +25,7 @@
 #define Grid_DC_Component_ADC	ADC_Value[8]
 #define I_Mains_CT_ADC      	ADC_Value[9]
 #define DC_Insulation_ADC      	ADC_Value[10]
+//#define Earth_Check_ADC         ADc_Value[11]  //need to change
 
 
 //#define I_Inv_CT_ADC    Debug.I_Inv_CT_ADC_Dummy_ADC
@@ -79,7 +80,7 @@
 #define Power_Limit  			(int64_t)741
 #define V_PV_400V  				(int64_t)2282
 
-#define I_Export_Limit_10A_Peak 			(int64_t)800 //6Amp
+#define I_Export_Limit_10A_Peak 			(int64_t)1200 //6Amp
 #define I_Import_Limit_10A_Peak 			(int64_t)0 //6Amp
 #define V_Batt_ADC_310V 					(int64_t)1307
 
@@ -170,4 +171,8 @@
 
 #define Debug_Flash_Write  					((uint16_t *) 0x0800F800)
 #define Debug_Flash_Write_1  				((uint16_t *) 0x0800FC00)
+
+#define Earth_Check_ADC_Out_Of_Limits       (Earth_Check_ADC < 546 || Earth_Check_ADC > 3003)
+
+//#define INV_SENSE_RELAY                     (READ)
 

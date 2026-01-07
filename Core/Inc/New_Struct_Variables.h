@@ -19,6 +19,7 @@ struct Intant_ADC{
 	__IO int32_t Mains_Power_CT_Mean;
 	__IO int64_t Inv_Power_Sum;
 	__IO int32_t Inv_Power_Mean;
+	__IO int32_t Earth_Fault;
 	};
 extern struct Intant_ADC Norm_ADC;
 
@@ -51,6 +52,9 @@ struct RMS_Values{
 	__IO uint64_t V_Mains_Mean_Sq;
 	__IO uint32_t V_Inv_Mean_Sq;
 	__IO uint64_t Apparent_Power;
+	__IO int32_t Earth_Fault;
+	__IO uint32_t Earth_Fault_Sq_Sum;
+	__IO uint64_t Earth_Fault_Mean_Sq;
 };
 extern struct RMS_Values Norm_Rms;
 
@@ -344,6 +348,8 @@ struct Inv_Control_Var{
 	__IO uint16_t V_Mains_Calib_Offset;
 	__IO uint32_t V_Mains_Calib_Offset_Sum;
 
+	__IO uint16_t Earth_Fault_Calib_Offset;
+
 	__IO int32_t Kp_V_DC_Link_Loop;
 	__IO int32_t Ki_V_DC_Link_Loop;
 	__IO int32_t V_Loop_Proportional_OP;
@@ -507,6 +513,7 @@ struct Temporary_Variables{
 	__IO uint32_t V_Inv;
 	__IO uint32_t I_Mains_CT;
 	__IO uint32_t I_Inv_CT;
+	__IO uint32_t Earth_Fault;
 
 
 };
@@ -523,6 +530,7 @@ struct Calibration_Settings{
 	__IO uint16_t V_Mains;
 	__IO uint16_t I_Mains_CT;
 	__IO uint16_t I_Inv_CT;
+	__IO uint16_t Earth_Fault;
 
 	__IO unsigned Error:1;
 	__IO unsigned OK:1;

@@ -530,7 +530,17 @@ void UART1_Use_Received_Data_C(void)
 	}
 
 	i = 9;
-	Calibration_Temp.V_PV = (uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
+	Calibration_Temp.V_PV =  (uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
+
+//  uint16_t temp =  (uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
+//    if(temp!=0)
+//    {
+//    	Calibration_Temp.V_PV = temp;
+//    }else
+//    {
+//    	Calibration_Temp.V_PV  = Calibration_Temp.V_PV;
+//    }
+
 	if(Calibration_Temp.V_PV<1638)
 	{
 		Calibration_Temp.V_PV = 1638;
@@ -595,20 +605,20 @@ void UART1_Use_Received_Data_C(void)
 	}
 
 
-	Calibration_Var = Calibration_Temp;
-//	if((Calibration_Temp.Error==0)&&(Switch_Is_ON))
-//	if((Calibration_Temp.Error==0))
-//	{
-//		Calibration_Var = Calibration_Temp;
-//		Calibration_Temp.OK = 1;
-//		Calibration_Var.OK = 1;
-//	}
-//	else
-//	{
-//		Calibration_Temp.OK = 0;
-//		Calibration_Var.OK = 0;
-//		Calibration_Temp.Error=1;
-//	}
+//	Calibration_Var = Calibration_Temp;
+	if((Calibration_Temp.Error==0)&&(Switch_Is_ON))
+	if((Calibration_Temp.Error==0))
+	{
+		Calibration_Var = Calibration_Temp;
+		Calibration_Temp.OK = 1;
+		Calibration_Var.OK = 1;
+	}
+	else
+	{
+		Calibration_Temp.OK = 0;
+		Calibration_Var.OK = 0;
+		Calibration_Temp.Error=1;
+	}
 
 }
 

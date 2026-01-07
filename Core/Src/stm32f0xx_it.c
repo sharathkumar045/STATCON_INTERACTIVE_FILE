@@ -342,7 +342,7 @@ void USART2_IRQHandler(void)
 
 //	UART2_Receive_ISR_Program();
 
-	UART1_Receive_ISR_Program();
+//	UART1_Receive_ISR_Program();
     UART2_Clear_Receive_Flag;
     USART2->ICR|=USART_ICR_ORECF;
 

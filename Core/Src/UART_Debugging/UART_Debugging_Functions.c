@@ -56,7 +56,7 @@ void UART_Debugging_Populate_Txdata_Array_With_Message_Debug_Data(void)
 			UART_Debugging_Txdata[0] = 0; // sending case index numbers to identify the packets
 			UART_Debugging_Txdata[1] = 0; // sending case index numbers to identify the packets
 
-			UART_Debugging_Var.Temp_Var = (int16_t)Earth_Fault_ADC;
+			UART_Debugging_Var.Temp_Var = (int16_t)Debug_Fast.A;
 
 			break;
 

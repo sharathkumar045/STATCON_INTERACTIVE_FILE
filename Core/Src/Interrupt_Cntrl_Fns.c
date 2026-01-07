@@ -49,6 +49,8 @@ void Inv_State_0_Int_Cntrl()
 		Inv_Cntrl.I_Inv_CT_Calib_Offset_Sum 	= 0;
 		Inv_Cntrl.V_Mains_Calib_Offset 			= 2048;
 
+		Inv_Cntrl.Earth_Fault_Calib_Offset      = 2048;
+
 		Cntr.Inv_EOS0_1 						= 0;
 		Cntr.ZCD_Diag_Delay 					= 0;
 		Cntr.Diag_delay 						= 0;
@@ -309,7 +311,7 @@ void Inv_State_1_Int_Cntrl()
 			Inv_Cntrl.V_Batt_Err_Integ = 0;
 		}
 
-		if(Norm_Rms.I_Inv_Pri >= 560)
+		if(Norm_Rms.I_Inv_Pri >= 840)
 		{
 			Inv_Cntrl.V_Batt_Err_Integ = Inv_Cntrl.V_Batt_Err_Integ - 1;
 		}
@@ -391,19 +393,18 @@ void PV_State_0_Int_Cntrl_Fn()
 {
 	if (PV_Cntrl.First_Time_State_Entry != 0)
 	{
-		PV_Cntrl.Delta_Duty 	= 1; //refers to 1V
-		PV_Cntrl.Duty_Cycle 	= 0;
-		PV_Cntrl.Duty_Dec 		= 0;
-		PV_Cntrl.Duty_Inc 		= 0;
-		PV_Cntrl.Duty_Sweep_Mode = 1;
-		PV_Cntrl.Power_New 		= 0;
-		PV_Cntrl.Power_Old 		= 0;
-		PV_Cntrl.State 			= 0;
-		PV_Cntrl.I_PV_Soft_Limit_Flag = 0;
+		PV_Cntrl.Delta_Duty 	        = 1; //refers to 1V
+		PV_Cntrl.Duty_Cycle 	        = 0;
+		PV_Cntrl.Duty_Dec 		        = 0;
+		PV_Cntrl.Duty_Inc 		        = 0;
+		PV_Cntrl.Duty_Sweep_Mode        = 1;
+		PV_Cntrl.Power_New 		        = 0;
+		PV_Cntrl.Power_Old 		        = 0;
+		PV_Cntrl.State 			        = 0;
+		PV_Cntrl.I_PV_Soft_Limit_Flag   = 0;
 		PV_Cntrl.First_Time_State_Entry = 0;
-
-		Cntr.Mppt_Loop 			= 0;
-		Cntr.PV_EOS0 			= 0;
+		Cntr.Mppt_Loop 			        = 0;
+		Cntr.PV_EOS0 			        = 0;
 	}
 	MPPT_OFF();
 

@@ -154,12 +154,14 @@ int main(void)
 			Temp_Var.I_Inv_Pri = sqrtf(Norm_Rms.I_Inv_Pri_Mean_Sq); // Rms inverter current
 			Temp_Var.V_Mains = sqrtf(Norm_Rms.V_Mains_Mean_Sq);     // Rms Mains voltage
 			Temp_Var.I_Mains_CT = sqrtf(Norm_Rms.I_Mains_CT_Mean_Sq);
+			Temp_Var.Earth_Fault = sqrtf(Norm_Rms.Earth_Fault_Mean_Sq);
 
 			Inv_Cntrl.RMS_Sqrt_Calc_Request = 0;
 
 			Norm_Rms.I_Inv_Pri = (Temp_Var.I_Inv_Pri * Calibration_Var.I_Inv)>>11;
 			Norm_Rms.I_Mains_CT = (Temp_Var.I_Mains_CT * Calibration_Var.I_Mains_CT)>>11;
 			Norm_Rms.V_Mains = (Temp_Var.V_Mains * Calibration_Var.V_Mains)>>11;
+			Norm_Rms.Earth_Fault = Temp_Var.Earth_Fault;                                   //remove calibration
 
 			if(Norm_Rms.I_Inv_Pri >4096)
 			{

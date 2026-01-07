@@ -77,6 +77,10 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define Earth_fault_Pin LL_GPIO_PIN_0
 #define Earth_fault_GPIO_Port GPIOC
+
+//#define Earth_Check_ADC LL_GPIO_PIN_2
+//#define Earth_Check_ADC_GPIO_Port GPIOC
+
 #define Grid_DC_Component_Pin LL_GPIO_PIN_1
 #define Grid_DC_Component_GPIO_Port GPIOC
 #define Hall_Sensor_Vref_Pin LL_GPIO_PIN_0
