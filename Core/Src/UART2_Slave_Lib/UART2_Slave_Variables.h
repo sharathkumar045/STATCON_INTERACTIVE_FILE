@@ -56,7 +56,7 @@
 #define UART2_Disable_Receive_Interrupt  USART1->CR1&=~LL_USART_CR1_RXNEIE
 #define UART2_Enable  USART1->CR1|=USART_CR1_UE
 #define UART2_Transmit_Not_Complete !(USART1->ISR&LL_USART_ISR_TC)
-#define UART2_Clear_Receive_Flag USART1->RQR|=USART_RQR_RXFRQ
+#define UART2_Clear_Receive_Flag USART2->RQR|=USART_RQR_RXFRQ
 #define UART2_Rec_Data_Register USART1->RDR
 #define UART2_Disable_Recv_INT USART1->CR1&=(~LL_USART_CR1_RXNEIE)
 

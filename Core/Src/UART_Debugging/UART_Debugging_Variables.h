@@ -52,13 +52,13 @@
   extern struct U_Rec_Var UART_Debugging_Rec_Var;
 
    
-#define UART_Debugging_Enable_Receive_Interrupt  USART2->CR1|=LL_USART_CR1_RXNEIE
-#define UART_Debugging_Disable_Receive_Interrupt  USART2->CR1&=~LL_USART_CR1_RXNEIE
+#define UART_Debugging_Enable_Receive_Interrupt  USART1->CR1|=LL_USART_CR1_RXNEIE
+#define UART_Debugging_Disable_Receive_Interrupt  USART1->CR1&=~LL_USART_CR1_RXNEIE
 #define UART_Debugging_Enable  USART1->CR1|=USART_CR1_UE
-#define UART_Debugging_Transmit_Not_Complete !(USART2->ISR&LL_USART_ISR_TC)
-#define UART_Debugging_Clear_Receive_Flag USART2->RQR|=USART_RQR_RXFRQ
-#define UART_Debugging_Rec_Data_Register USART2->RDR
-#define UART_Debugging_Disable_Recv_INT USART2->CR1&=(~LL_USART_CR1_RXNEIE)
+#define UART_Debugging_Transmit_Not_Complete !(USART1->ISR&LL_USART_ISR_TC)
+#define UART_Debugging_Clear_Receive_Flag USART1->RQR|=USART_RQR_RXFRQ
+#define UART_Debugging_Rec_Data_Register USART1->RDR
+#define UART_Debugging_Disable_Recv_INT USART1->CR1&=(~LL_USART_CR1_RXNEIE)
 
 
 
@@ -98,8 +98,8 @@
 
    
       #define UART_Debugging_Send_Ack_Wait_Time_Limit 30000 // these many counts of interrupt time length
-      #define UART_Debugging_Transmit_Data_register USART2->TDR
-      #define UART_Debugging_TRx_Complete (USART2->ISR&0x00000040)
+      #define UART_Debugging_Transmit_Data_register USART1->TDR
+      #define UART_Debugging_TRx_Complete (USART1->ISR&0x00000040)
       #define UART_Debugging_Expected_Ack_for_msg_A '0'
       #define UART_Debugging_Send_Number_of_Msg_types 1 //if A ,B, C and X are the message types possible then this will be 4
 

@@ -183,6 +183,8 @@ void TIM1_BRK_UP_TRG_COM_IRQHandler(void)
 
 	Cntrs_Incrmnt_Fn_for_100us_ISR();    //inverter functions which run in all inverter states (weather export or inverter state)
 
+	PFC_Power_on_off();
+
 /////////////////////////////////Average Limits/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -322,6 +324,8 @@ void USART1_IRQHandler(void)
 
 //	UART1_Receive_ISR_Program();
 
+//    UART1_Clear_Receive_Flag;
+	UART2_Receive_ISR_Program();
     UART1_Clear_Receive_Flag;
     USART1->ICR|=USART_ICR_ORECF;
 
@@ -342,7 +346,7 @@ void USART2_IRQHandler(void)
 
 //	UART2_Receive_ISR_Program();
 
-//	UART1_Receive_ISR_Program();
+	UART1_Receive_ISR_Program();
     UART2_Clear_Receive_Flag;
     USART2->ICR|=USART_ICR_ORECF;
 

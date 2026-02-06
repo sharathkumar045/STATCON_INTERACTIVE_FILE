@@ -52,10 +52,10 @@ void TIM3_CAPEN_IEN_STRT()
 
 void CAPTURE_DMA_CH4_CONFIG()
 {
-	DMA1_Channel4->CPAR = (uint32_t) (&(TIM3->CCR1));
-	DMA1_Channel4->CMAR = (uint32_t)(&(Inv_Cntrl.Time_Period_Grid));
+	DMA1_Channel4->CPAR  = (uint32_t) (&(TIM3->CCR1));
+	DMA1_Channel4->CMAR  = (uint32_t)(&(Inv_Cntrl.Time_Period_Grid));
 	DMA1_Channel4->CNDTR = 1;
-	DMA1_Channel4->CCR |= DMA_CCR_EN;
+	DMA1_Channel4->CCR  |= DMA_CCR_EN;
 }
 
 void TIM14_CH1_PWM_Config()
@@ -63,8 +63,8 @@ void TIM14_CH1_PWM_Config()
 	LL_TIM_OC_DisablePreload(TIM14, LL_TIM_CHANNEL_CH1);
 
 	TIM14->CCER |= TIM_CCER_CC1E;
-	TIM14->CCR1 = 300; //160V this is used for PV ref generation, the set voltage of PV will be 30V less than actual set voltage
-	TIM14->CR1 |= TIM_CR1_CEN;
+	TIM14->CCR1  = 300; //160V this is used for PV ref generation, the set voltage of PV will be 30V less than actual set voltage
+	TIM14->CR1  |= TIM_CR1_CEN;
 }
 
 void Inverter_OFF()
@@ -77,9 +77,9 @@ void Inverter_OFF()
 
 	if((TIM1->CCR2)||(TIM1->CCR3)||(TIM1->CCER&(~0xfaaf)))
 		{
-			TIM1->CCR2 = 0;
-			TIM1->CCR3 = 0;
-			TIM1->CCER&= 0xfaaf;
+			TIM1->CCR2  = 0;
+			TIM1->CCR3  = 0;
+			TIM1->CCER &= 0xfaaf;
 			Inv_Cntrl.Inv_Off_to_Mains_Relay_Off_Delay_Flag=1;
 		}
 	else
@@ -169,9 +169,9 @@ void ADC_Avg_And_RMS_Cal()
 			 Norm_Avg.V_Batt = 4095;
 		 }
 
-		 Norm_Avg.I_PV_Sum=0;
-		 Norm_Avg.V_PV_Sum=0;
-		 Norm_Avg.V_Batt_Sum=0;
+		 Norm_Avg.I_PV_Sum   = 0;
+		 Norm_Avg.V_PV_Sum   = 0;
+		 Norm_Avg.V_Batt_Sum = 0;
 
 		 Cntr.ADC_Avg=1;
 
@@ -198,19 +198,19 @@ void ADC_Avg_And_RMS_Cal()
 
 	 if(Cntr.Mean_Sq_Sum>Othr.Sine_Length)
 	 {
-		 Norm_Rms.V_Mains_Mean_Sq 	= (((uint64_t)Norm_Rms.V_Mains_Sq_Sum*Norm_Avg.Multiplier))>>18;           // division by 192 has been shifted
-		 Norm_Rms.I_Inv_Pri_Mean_Sq = (((uint64_t)Norm_Rms.I_Inv_Pri_Sq_Sum*Norm_Avg.Multiplier)>>18);
-		 Norm_Rms.I_Mains_CT_Mean_Sq = (((uint64_t)Norm_Rms.I_Mains_CT_Sq_Sum*Norm_Avg.Multiplier)>>18);
+		 Norm_Rms.V_Mains_Mean_Sq 	  = (((uint64_t)Norm_Rms.V_Mains_Sq_Sum*Norm_Avg.Multiplier))>>18;           // division by 192 has been shifted
+		 Norm_Rms.I_Inv_Pri_Mean_Sq   = (((uint64_t)Norm_Rms.I_Inv_Pri_Sq_Sum*Norm_Avg.Multiplier)>>18);
+		 Norm_Rms.I_Mains_CT_Mean_Sq  = (((uint64_t)Norm_Rms.I_Mains_CT_Sq_Sum*Norm_Avg.Multiplier)>>18);
 		 Norm_Rms.Earth_Fault_Mean_Sq = (((uint64_t)Norm_Rms.Earth_Fault_Sq_Sum *Norm_Avg.Multiplier)>>18);
 
 		 if(Norm_ADC.Mains_Power_Sum >= 0)
 		 {
-			 Norm_ADC.Mains_Power_Mean= ((uint64_t)(Norm_ADC.Mains_Power_Sum*Norm_Avg.Multiplier))>>18; // for calculating the actual power consumed(KW)
+			 Norm_ADC.Mains_Power_Mean = ((uint64_t)(Norm_ADC.Mains_Power_Sum*Norm_Avg.Multiplier))>>18; // for calculating the actual power consumed(KW)
 		 }
 		 else
 		 {
-			 Norm_ADC.Mains_Power_Sum = -Norm_ADC.Mains_Power_Sum;
-			 Norm_ADC.Mains_Power_Mean= -(((uint64_t)(Norm_ADC.Mains_Power_Sum*Norm_Avg.Multiplier))>>18); // for calculating the actual power consumed(KW)
+			 Norm_ADC.Mains_Power_Sum  = -Norm_ADC.Mains_Power_Sum;
+			 Norm_ADC.Mains_Power_Mean = -(((uint64_t)(Norm_ADC.Mains_Power_Sum*Norm_Avg.Multiplier))>>18); // for calculating the actual power consumed(KW)
 		 }
 
 //		 if(Norm_ADC.Mains_Power_CT_Sum >= 0)
@@ -223,17 +223,17 @@ void ADC_Avg_And_RMS_Cal()
 //			 Norm_ADC.Mains_Power_CT_Mean= -(((uint64_t)(Norm_ADC.Mains_Power_CT_Sum*Norm_Avg.Multiplier))>>18); // for calculating the actual power consumed(KW)
 //		 }
 
-		 Norm_ADC.Mains_Power_Sum= 0;
-//		 Norm_ADC.Mains_Power_CT_Sum = 0;
-         Norm_ADC.Inv_Power_Sum=0;
+		 Norm_ADC.Mains_Power_Sum        = 0;
+//		 Norm_ADC.Mains_Power_CT_Sum     = 0;
+         Norm_ADC.Inv_Power_Sum          = 0;
 
-		 Norm_Rms.V_Mains_Sq_Sum= 0;
-		 Norm_Rms.I_Inv_Pri_Sq_Sum = 0;
-		 Norm_Rms.I_Mains_CT_Sq_Sum = 0;
-		 Norm_Rms.Earth_Fault_Sq_Sum = 0;
+		 Norm_Rms.V_Mains_Sq_Sum         = 0;
+		 Norm_Rms.I_Inv_Pri_Sq_Sum       = 0;
+		 Norm_Rms.I_Mains_CT_Sq_Sum      = 0;
+		 Norm_Rms.Earth_Fault_Sq_Sum     = 0;
 
-		 Inv_Cntrl.RMS_Sqrt_Calc_Request=1;
-		 Cntr.Mean_Sq_Sum=1;
+		 Inv_Cntrl.RMS_Sqrt_Calc_Request = 1;
+		 Cntr.Mean_Sq_Sum                = 1;
 	}
 }
 
@@ -442,13 +442,13 @@ void Cntrs_Incrmnt_Fn_for_100us_ISR()
 
 	if((Inv_Cntrl.State==1)&&(Inv_Cntrl.First_Time_State_Entry == 0)&&(Inv_Cntrl.Count == 1))
 	{
-		Inv_Cntrl.Inv_Export_Ipeak_limit = Inv_Cntrl.Inv_Export_Ipeak_limit + 2;
+		Inv_Cntrl.Inv_Export_Ipeak_limit     = Inv_Cntrl.Inv_Export_Ipeak_limit + 2;
 		if(Inv_Cntrl.Inv_Export_Ipeak_limit >= I_Export_Limit_10A_Peak)
 		{
 			Inv_Cntrl.Inv_Export_Ipeak_limit = I_Export_Limit_10A_Peak;
 		}
 
-		Inv_Cntrl.Inv_Import_Ipeak_limit = Inv_Cntrl.Inv_Import_Ipeak_limit + 2;
+		Inv_Cntrl.Inv_Import_Ipeak_limit     = Inv_Cntrl.Inv_Import_Ipeak_limit + 2;
 		if(Inv_Cntrl.Inv_Import_Ipeak_limit >= I_Import_Limit_10A_Peak)
 		{
 			Inv_Cntrl.Inv_Import_Ipeak_limit = I_Import_Limit_10A_Peak;
@@ -495,8 +495,8 @@ void Zero_Crossing_Detection_Counter_Fn()
 
 		if((Othr.ZCD_Value_From_Timer > 9000)&&(Othr.ZCD_Value_From_Timer < 11111)) //if the freq between 45Hz and 55Hz, for 50Hz it is 10000
 		{
-			TIM1->ARR 					= (Othr.ZCD_Value_From_Timer>>3);
-			Inv_Cntrl.Time_Period_Grid 	= (Othr.ZCD_Value_From_Timer<<2);
+			TIM1->ARR 					= (Othr.ZCD_Value_From_Timer>>3);            //1250
+			Inv_Cntrl.Time_Period_Grid 	= (Othr.ZCD_Value_From_Timer<<2);            //40K
 			Inv_Cntrl.Count 			= 4;
 			Cntr.ZCD_Error 				= 0;
 			Inv_Cntrl.ZCD 				= 0; // if this is one then it is used for anti-islanding code
@@ -1368,7 +1368,8 @@ void Variable_Init()
 	Inv_Cntrl.I_Error_Inv 					= 0;
 	Inv_Cntrl.I_Ref 						= 0;
 	Inv_Cntrl.Ki_V_Batt 					= 0 ;
-	Inv_Cntrl.Kp_I_Inv_Loop 				= 16384;    //1.5<<12 = 6144
+	Inv_Cntrl.Kp_I_Inv_Loop 				= 4096;   //16384 //1.5<<12 = 6144
+	Inv_Cntrl.Ki_I_Inv_Loop                 = 0;
 	Inv_Cntrl.PerUnit 						= 4096;
 	Inv_Cntrl.RMS_Sqrt_Calc_Request 		= 0;
 	Inv_Cntrl.Soft_Start_Var 				= 0;
@@ -2502,6 +2503,82 @@ void PV_Power_Unavailable_Detection()
 		}
 	}
 }
+
+void PFC_Power_on_off(void)
+{
+	if(V_DC_Link_ADC < 1640 || (V_PV_ADC >= 1620 && V_PV_ADC <= 1640)) //380V
+	{
+		Inv_Cntrl.pfc_off_counter++;
+
+	   if(Inv_Cntrl.pfc_off_counter>50000)
+	   {
+		 PFC_Power_OFF;
+		 Inv_Cntrl.pfc_flag = 1;
+		 Inv_Cntrl.pfc_off_counter = 0;
+	   }
+
+  }
+  else
+  {
+	  Inv_Cntrl.pfc_off_counter = 0;
+  }
+
+  if(Inv_Cntrl.pfc_flag == 1)
+    {
+	  Inv_Cntrl.pfc_on_counter++;
+
+       if(Inv_Cntrl.pfc_on_counter > One_Second_Count)
+	   {
+		  PFC_Power_ON;
+		  Inv_Cntrl.pfc_flag = 0;
+		  Inv_Cntrl.pfc_on_counter = 0;
+		}
+	}
+}
+
+
+//int count = 0;
+//int primary_current_sum = 0;
+//
+//
+//
+//void V_mains_offset_correction(void)                                     //called inside 100us interrupt function
+//{
+//
+//   primary_current_sum += Norm_ADC.I_Inv_Pri_AC;
+//   offset_corr_count++;
+//   if(offset_corr_count >= 960)
+//   {
+//	   offset_corr_avg_flag = 1;
+//	   offset_corr_count    = offset_correction_count;                                     // count
+//	   offset_corr_avg      = (primary_current_sum * offset_corr_multiplier ) >> 18;      //(1/960)<<18 = 273.0, offset_corr_multiplier=273
+//
+//	   primary_current_sum = 0;
+//	   offset_corr_count = 0;
+//
+//	   if(offset_corr_avg > 4)  // 0.1 milli Amp  25mV/A
+//	   {
+//		   off_set_inc = 1;                                           //increment flag
+//	   }
+//	   else if(offset_corr_avg < 4) // 0.1 milli Amp
+//	   {
+//		   off_set_dec = 1;                                           //decrement flag
+//	   }
+//
+//
+//	   if(off_set_inc == 1)
+//	   {
+//		   Inv_Cntrl.V_Mains_Calib_Offset = Inv_Cntrl.V_Mains_Calib_Offset+10;
+//	   }
+//	   else if(off_set_dec == 1)
+//	   {
+//		   Inv_Cntrl.V_Mains_Calib_Offset = Inv_Cntrl.V_Mains_Calib_Offset-10;
+//	   }
+//
+//   }
+//
+//}
+
 
 //void Debug_Data_Storage_Fn()
 //{

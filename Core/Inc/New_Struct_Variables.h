@@ -362,6 +362,14 @@ struct Inv_Control_Var{
 	__IO int32_t Inv_PWM_50_Percent;
 
 	__IO int8_t I_Inv_Soft_Start;
+
+	__IO unsigned pfc_flag:1;
+	__IO uint16_t pfc_off_counter;
+	__IO uint16_t pfc_on_counter;
+
+	__IO uint32_t I_Error_Integ;
+	__IO uint32_t Ki_I_Inv_Loop;
+	__IO uint32_t I_Loop_Proportional_OP;
 };
 extern struct Inv_Control_Var Inv_Cntrl;
 

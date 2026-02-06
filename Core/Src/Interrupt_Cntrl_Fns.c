@@ -37,7 +37,7 @@ void Inv_State_0_Int_Cntrl()
 		Inv_Cntrl.Synchronizing_Var 			= 0;
 
 		Inv_Cntrl.V_Batt_ref 					= 1920; //400V
-		Inv_Cntrl.Kp_V_DC_Link_Loop 			= 28672;//7<<12 = 28672
+		Inv_Cntrl.Kp_V_DC_Link_Loop 			= 16384;//7<<12 = 28672
 		Inv_Cntrl.Ki_V_DC_Link_Loop 			= 4;//1<<12 = 4096
 		Inv_Cntrl.I_Inv_Pri_Calib_Offset 		= 2010;
 		Inv_Cntrl.I_Inv_Pri_Calib_Offset_Sum 	= 0;
@@ -311,10 +311,10 @@ void Inv_State_1_Int_Cntrl()
 			Inv_Cntrl.V_Batt_Err_Integ = 0;
 		}
 
-		if(Norm_Rms.I_Inv_Pri >= 840)
-		{
-			Inv_Cntrl.V_Batt_Err_Integ = Inv_Cntrl.V_Batt_Err_Integ - 1;
-		}
+//		if(Norm_Rms.I_Inv_Pri >= 840)
+//		{
+//			Inv_Cntrl.V_Batt_Err_Integ = Inv_Cntrl.V_Batt_Err_Integ - 1;
+//		}
 		Batt_V_Err_Integ_Saturator_Code(); // this function contains the code which limits the Inv_Cntrl.V_Batt_Err_Integ value to inverter peak limit
 
 		Inv_Cntrl.I_Peak_Ref = Inv_Cntrl.V_Batt_Err_Prop_Integ;
@@ -325,7 +325,22 @@ void Inv_State_1_Int_Cntrl()
 
 		Inv_Cntrl.I_Error_Inv = (Inv_Cntrl.I_Ref - Norm_ADC.I_Inv_Pri_AC); //  comparing the reference current with inverter current
 
-		Inv_Cntrl.V_Delta_Generate = ((Inv_Cntrl.I_Error_Inv * (int32_t) Inv_Cntrl.Kp_I_Inv_Loop) >> 12); // voltage generated after the current loop
+		Inv_Cntrl.I_Loop_Proportional_OP = ((Inv_Cntrl.I_Error_Inv * (int32_t) Inv_Cntrl.Kp_I_Inv_Loop) >> 12); // voltage generated after the current loop
+
+//		Inv_Cntrl.I_Error_Integ = ((Inv_Cntrl.I_Error_Inv * Inv_Cntrl.Ki_I_Inv_Loop) >> 12) + Inv_Cntrl.I_Error_Integ;
+
+		if (Inv_Cntrl.I_Error_Inv >= V_Batt_2V)
+		{
+			Inv_Cntrl.I_Error_Integ = ((Inv_Cntrl.I_Error_Inv * (int32_t)Inv_Cntrl.Ki_I_Inv_Loop)) + Inv_Cntrl.I_Error_Integ;
+		}
+
+		if (Inv_Cntrl.I_Error_Inv <= -(V_Batt_2V))
+		{
+			Inv_Cntrl.I_Error_Integ = ((Inv_Cntrl.I_Error_Inv * (int32_t)Inv_Cntrl.Ki_I_Inv_Loop)) + Inv_Cntrl.I_Error_Integ;
+		}
+
+		Inv_Cntrl.V_Delta_Generate = Inv_Cntrl.I_Loop_Proportional_OP + (Inv_Cntrl.I_Error_Integ>>12);
+
 
 		V_Delta_Generate_Saturator_Code();   // limiting V_Delta_Generate to 1000
 		Inv_Cntrl.V_Delta_Generate=Inv_Cntrl.V_Delta_Generate>>3;
@@ -346,8 +361,7 @@ void Inv_State_1_Int_Cntrl()
 		V_Generate_Saturator_Code(); // this function has the code which limits the Inv_Cntrl.V_Generate value to V_Peak_Inverter_Capability
 
 		Inv_Cntrl.Inv_PWM_50_Percent = PWM_50_percnt;
-
-		if(Inv_Cntrl.V_Generate > Inv_Cntrl.Inv_PWM_50_Percent)
+  		if(Inv_Cntrl.V_Generate > Inv_Cntrl.Inv_PWM_50_Percent)
 		{
 			Inv_Cntrl.V_Generate = Inv_Cntrl.Inv_PWM_50_Percent;
 		}

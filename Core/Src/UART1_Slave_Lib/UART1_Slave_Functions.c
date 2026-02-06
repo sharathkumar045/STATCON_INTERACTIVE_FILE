@@ -29,13 +29,13 @@ void UART1_Store_Received_Data_In_Variables(void)
 
 void UART1_Update_Variables_if_Mesage_is_S(void)
 {
-   if(UART1_recvdata[0]=='S' && UART1_Rec_Var.Array_Index==49)//for user set
+   if(UART1_recvdata[0]=='S' && UART1_Rec_Var.Array_Index==43)//for user set
 	 {
 		UART1_Rec_Flags.busy_flag=1;
 		UART1_Rec_Flags.recv_check=0;
-		UART1_Rec_Var.U1_CRC = UART1_crcFast((UART1_recvdata),49);
+		UART1_Rec_Var.U1_CRC = UART1_crcFast((UART1_recvdata),43);
 		UART1_recvdata[0]=0;
-		if(UART1_Rec_Var.U1_CRC == UART1_recvdata[49])
+		if(UART1_Rec_Var.U1_CRC == UART1_recvdata[43])
 		{
 //			UART1_Use_Received_Data_S();
 //			if(Othr.Recieved_Settings_Ok == 1)
@@ -138,18 +138,18 @@ void UART1_Use_Received_Data_S(void)
 
 	if(Othr.Recieved_Settings_Error == 0)
 	{
-		Norm_Avg_Limits.V_Batt_UL_H_Cut_Off  	= Temp_Settings.V_Batt_UL_H_Cut_Off;
-		Norm_Avg_Limits.V_Batt_UL_L_Cut_In 		= Temp_Settings.V_Batt_UL_L_Cut_In;
-		Norm_Avg_Limits.V_Batt_LL_H_Cut_In 		= Temp_Settings.V_Batt_LL_H_Cut_In;
-		Norm_Avg_Limits.V_Batt_LL_L_Cut_Off 	= Temp_Settings.V_Batt_LL_L_Cut_Off;
+		Norm_Avg_Limits.V_Batt_UL_H_Cut_Off  	 = Temp_Settings.V_Batt_UL_H_Cut_Off;
+		Norm_Avg_Limits.V_Batt_UL_L_Cut_In 		 = Temp_Settings.V_Batt_UL_L_Cut_In;
+		Norm_Avg_Limits.V_Batt_LL_H_Cut_In 		 = Temp_Settings.V_Batt_LL_H_Cut_In;
+		Norm_Avg_Limits.V_Batt_LL_L_Cut_Off 	 = Temp_Settings.V_Batt_LL_L_Cut_Off;
 		/////
 		Norm_RMS_Limits.I_Inv_Pri_AC_100_Percent = Temp_Settings.I_Inv_Pri_AC_100_Percent;
 		Norm_RMS_Limits.I_Inv_Pri_AC_110_Percent = Temp_Settings.I_Inv_Pri_AC_100_Percent + (Temp_Settings.I_Inv_Pri_AC_100_Percent>>3);
 		Norm_RMS_Limits.I_Inv_Pri_AC_125_Percent = Temp_Settings.I_Inv_Pri_AC_100_Percent + (Temp_Settings.I_Inv_Pri_AC_100_Percent>>2);
 		Norm_RMS_Limits.I_Inv_Pri_AC_150_Percent = Temp_Settings.I_Inv_Pri_AC_100_Percent + (Temp_Settings.I_Inv_Pri_AC_100_Percent>>1);
 
-		Norm_ADC_Limits.I_Inv_Pri_AC_UL 		= (Temp_Settings.I_Inv_Pri_AC_100_Percent<<1) + (Temp_Settings.I_Inv_Pri_AC_100_Percent>>1); //X2.5 times RMS
-		Norm_ADC_Limits.I_Inv_Pri_AC_UL			= (Norm_ADC_Limits.I_Inv_Pri_AC_UL)+ (Norm_ADC_Limits.I_Inv_Pri_AC_UL>>1); //peak is approx 1.5 *RMS
+		Norm_ADC_Limits.I_Inv_Pri_AC_UL 		 = (Temp_Settings.I_Inv_Pri_AC_100_Percent<<1) + (Temp_Settings.I_Inv_Pri_AC_100_Percent>>1); //X2.5 times RMS
+		Norm_ADC_Limits.I_Inv_Pri_AC_UL			 = (Norm_ADC_Limits.I_Inv_Pri_AC_UL)+ (Norm_ADC_Limits.I_Inv_Pri_AC_UL>>1); //peak is approx 1.5 *RMS
 		if(Norm_ADC_Limits.I_Inv_Pri_AC_UL>3900)
 		{
 			Norm_ADC_Limits.I_Inv_Pri_AC_UL=3900;
@@ -218,64 +218,64 @@ void UART1_Recieved_Settings_Error_Check(void)
 {
 	__IO uint8_t i;
 	i=1;
-	Temp_Settings.Inv_Volt_Set 			= (uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
+	Temp_Settings.Inv_Volt_Set 			   = (uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
 
 	i=3;
-	Temp_Settings.V_Batt_UL_H_Cut_Off 	=(uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
+	Temp_Settings.V_Batt_UL_H_Cut_Off 	   = (uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
 
 	i=5;
-	Temp_Settings.V_Batt_UL_L_Cut_In 	=(uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
+	Temp_Settings.V_Batt_UL_L_Cut_In 	   = (uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
 
 	i=7;
-	Temp_Settings.V_Batt_LL_H_Cut_In 	=(uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
+	Temp_Settings.V_Batt_LL_H_Cut_In 	   = (uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
 
 	i=9;
-	Temp_Settings.V_Batt_LL_L_Cut_Off 	=(uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
+	Temp_Settings.V_Batt_LL_L_Cut_Off 	   = (uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
 
 	i=11;
-	Temp_Settings.I_Inv_Pri_AC_100_Percent =(uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
+	Temp_Settings.I_Inv_Pri_AC_100_Percent = (uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
 
 	i=13;
-	Temp_Settings.Relay_OFF_Delay_Time 	=(uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
+	Temp_Settings.Relay_OFF_Delay_Time 	   = (uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
 
 	i=15;
-	Temp_Settings.Relay_ON_Delay_Time 	=(uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
+	Temp_Settings.Relay_ON_Delay_Time 	   = (uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
 
 	i=17;
-	Temp_Settings.Inv_Ipeak_limit 		=(uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
+	Temp_Settings.Inv_Ipeak_limit 		   = (uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
 
 	i=19;
-	Temp_Settings.Inv_Import_Ipeak_limit =(uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
+	Temp_Settings.Inv_Import_Ipeak_limit   = (uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
 
 	i=21;
-	Temp_Settings.V_PV_UL_H_Cut_Off 	=(uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
+	Temp_Settings.V_PV_UL_H_Cut_Off        = (uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
 
 	i=23;
-	Temp_Settings.V_PV_UL_L_Cut_In 		=(uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
+	Temp_Settings.V_PV_UL_L_Cut_In 		   = (uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
 
 	i=25;
-	Temp_Settings.V_PV_LL_H_Cut_In 		=(uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
+	Temp_Settings.V_PV_LL_H_Cut_In 		   = (uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
 
 	i=27;
-	Temp_Settings.V_PV_LL_L_Cut_Off 	=(uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
+	Temp_Settings.V_PV_LL_L_Cut_Off 	   = (uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
 
 	i=29;
-	Temp_Settings.I_PV_UL 				=(uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
+	Temp_Settings.I_PV_UL 				   = (uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
 
 	i=31;
-	Temp_Settings.V_Mains_AC_UL_H_Cut_Off =(uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
+	Temp_Settings.V_Mains_AC_UL_H_Cut_Off  = (uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
 
 	i=33;
-	Temp_Settings.V_Mains_AC_UL_L_Cut_In =(uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
+	Temp_Settings.V_Mains_AC_UL_L_Cut_In   = (uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
 
 	i=35;
-	Temp_Settings.V_Mains_AC_LL_H_Cut_In =(uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
+	Temp_Settings.V_Mains_AC_LL_H_Cut_In   = (uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
 
 	i=37;
-	Temp_Settings.V_Mains_AC_LL_L_Cut_Off =(uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
+	Temp_Settings.V_Mains_AC_LL_L_Cut_Off  = (uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
 
 	i=39;
-	Temp_Settings.PV_Power_Limit =(uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
+	Temp_Settings.PV_Power_Limit           = (uint16_t)(UART1_recvdata[i])|((uint16_t)(UART1_recvdata[i+1])<<8);
 
 
 	if((Temp_Settings.V_Batt_UL_H_Cut_Off<4096)&&(Temp_Settings.V_Batt_UL_H_Cut_Off>=Temp_Settings.V_Batt_UL_L_Cut_In))
@@ -285,7 +285,7 @@ void UART1_Recieved_Settings_Error_Check(void)
 	else
 		{
 			Othr.Recieved_Settings_Error = 1;
-			Othr.Recieved_Settings_Ok = 0;
+			Othr.Recieved_Settings_Ok    = 0;
 		}
 
 	if((Temp_Settings.V_Batt_UL_L_Cut_In<Temp_Settings.V_Batt_UL_H_Cut_Off)&&(Temp_Settings.V_Batt_UL_L_Cut_In>=Temp_Settings.V_Batt_LL_H_Cut_In))
@@ -295,7 +295,7 @@ void UART1_Recieved_Settings_Error_Check(void)
 	else
 		{
 			Othr.Recieved_Settings_Error = 1;
-			Othr.Recieved_Settings_Ok = 0;
+			Othr.Recieved_Settings_Ok    = 0;
 		}
 
 	if((Temp_Settings.V_Batt_LL_H_Cut_In<Temp_Settings.V_Batt_UL_L_Cut_In)&&(Temp_Settings.V_Batt_LL_H_Cut_In>=Temp_Settings.V_Batt_LL_L_Cut_Off))
@@ -305,7 +305,7 @@ void UART1_Recieved_Settings_Error_Check(void)
 	else
 		{
 			Othr.Recieved_Settings_Error = 1;
-			Othr.Recieved_Settings_Ok = 0;
+			Othr.Recieved_Settings_Ok    = 0;
 		}
 
 	if((Temp_Settings.V_Batt_LL_L_Cut_Off<=Temp_Settings.V_Batt_LL_H_Cut_In)&&(Temp_Settings.V_Batt_LL_L_Cut_Off>0))
@@ -315,7 +315,7 @@ void UART1_Recieved_Settings_Error_Check(void)
 	else
 		{
 			Othr.Recieved_Settings_Error = 1;
-			Othr.Recieved_Settings_Ok = 0;
+			Othr.Recieved_Settings_Ok    = 0;
 		}
 
 	if((Temp_Settings.I_Inv_Pri_AC_100_Percent<=1500)&&(Temp_Settings.I_Inv_Pri_AC_100_Percent>0))
@@ -325,7 +325,7 @@ void UART1_Recieved_Settings_Error_Check(void)
 	else
 		{
 			Othr.Recieved_Settings_Error = 1;
-			Othr.Recieved_Settings_Ok = 0;
+			Othr.Recieved_Settings_Ok    = 0;
 		}
 
 	if((Temp_Settings.Relay_OFF_Delay_Time<576)&&(Temp_Settings.Relay_OFF_Delay_Time>0))
@@ -335,7 +335,7 @@ void UART1_Recieved_Settings_Error_Check(void)
 	else
 		{
 			Othr.Recieved_Settings_Error = 1;
-			Othr.Recieved_Settings_Ok = 0;
+			Othr.Recieved_Settings_Ok    = 0;
 		}
 
 	if((Temp_Settings.Relay_ON_Delay_Time<576)&&(Temp_Settings.Relay_ON_Delay_Time>0))
@@ -345,7 +345,7 @@ void UART1_Recieved_Settings_Error_Check(void)
 	else
 		{
 			Othr.Recieved_Settings_Error = 1;
-			Othr.Recieved_Settings_Ok = 0;
+			Othr.Recieved_Settings_Ok    = 0;
 		}
 
 	if((Temp_Settings.Inv_Ipeak_limit<Norm_ADC_Limits.I_Inv_Pri_AC_UL)&&(Temp_Settings.Inv_Ipeak_limit>0))
@@ -355,7 +355,7 @@ void UART1_Recieved_Settings_Error_Check(void)
 	else
 		{
 			Othr.Recieved_Settings_Error = 1;
-			Othr.Recieved_Settings_Ok = 0;
+			Othr.Recieved_Settings_Ok    = 0;
 		}
 	if((Temp_Settings.Inv_Import_Ipeak_limit<Norm_ADC_Limits.I_Inv_Pri_AC_UL)&&(Temp_Settings.Inv_Import_Ipeak_limit>0))
 		{
@@ -364,7 +364,7 @@ void UART1_Recieved_Settings_Error_Check(void)
 	else
 		{
 			Othr.Recieved_Settings_Error = 1;
-			Othr.Recieved_Settings_Ok = 0;
+			Othr.Recieved_Settings_Ok    = 0;
 		}
 
 
@@ -375,7 +375,7 @@ void UART1_Recieved_Settings_Error_Check(void)
 	else
 		{
 			Othr.Recieved_Settings_Error = 1;
-			Othr.Recieved_Settings_Ok = 0;
+			Othr.Recieved_Settings_Ok    = 0;
 		}
 
 	if((Temp_Settings.V_PV_UL_L_Cut_In<Temp_Settings.V_PV_UL_H_Cut_Off)&&(Temp_Settings.V_PV_UL_L_Cut_In>=Temp_Settings.V_PV_LL_H_Cut_In))
@@ -385,7 +385,7 @@ void UART1_Recieved_Settings_Error_Check(void)
 	else
 		{
 			Othr.Recieved_Settings_Error = 1;
-			Othr.Recieved_Settings_Ok = 0;
+			Othr.Recieved_Settings_Ok    = 0;
 		}
 
 	if((Temp_Settings.V_PV_LL_H_Cut_In<Temp_Settings.V_PV_UL_L_Cut_In)&&(Temp_Settings.V_PV_LL_H_Cut_In>=Temp_Settings.V_PV_LL_L_Cut_Off))
@@ -395,7 +395,7 @@ void UART1_Recieved_Settings_Error_Check(void)
 	else
 		{
 			Othr.Recieved_Settings_Error = 1;
-			Othr.Recieved_Settings_Ok = 0;
+			Othr.Recieved_Settings_Ok    = 0;
 		}
 
 	if((Temp_Settings.V_PV_LL_L_Cut_Off<=Temp_Settings.V_PV_LL_H_Cut_In)&&(Temp_Settings.V_PV_LL_L_Cut_Off>0))
@@ -405,7 +405,7 @@ void UART1_Recieved_Settings_Error_Check(void)
 	else
 		{
 			Othr.Recieved_Settings_Error = 1;
-			Othr.Recieved_Settings_Ok = 0;
+			Othr.Recieved_Settings_Ok    = 0;
 		}
 
 	if((Temp_Settings.I_PV_UL<=Norm_ADC_Limits.I_PV_UL))
@@ -415,7 +415,7 @@ void UART1_Recieved_Settings_Error_Check(void)
 	else
 		{
 			Othr.Recieved_Settings_Error = 1;
-			Othr.Recieved_Settings_Ok = 0;
+			Othr.Recieved_Settings_Ok    = 0;
 		}
 
 	if((Temp_Settings.V_Mains_AC_UL_H_Cut_Off<4096)&&(Temp_Settings.V_Mains_AC_UL_H_Cut_Off>=Temp_Settings.V_Mains_AC_UL_L_Cut_In))
@@ -425,7 +425,7 @@ void UART1_Recieved_Settings_Error_Check(void)
 	else
 		{
 			Othr.Recieved_Settings_Error = 1;
-			Othr.Recieved_Settings_Ok = 0;
+			Othr.Recieved_Settings_Ok    = 0;
 		}
 
 	if((Temp_Settings.V_Mains_AC_UL_L_Cut_In<Temp_Settings.V_Mains_AC_UL_H_Cut_Off)&&(Temp_Settings.V_Mains_AC_UL_L_Cut_In>=Temp_Settings.V_Mains_AC_LL_H_Cut_In))
@@ -435,7 +435,7 @@ void UART1_Recieved_Settings_Error_Check(void)
 	else
 		{
 			Othr.Recieved_Settings_Error = 1;
-			Othr.Recieved_Settings_Ok = 0;
+			Othr.Recieved_Settings_Ok    = 0;
 		}
 
 	if((Temp_Settings.V_Mains_AC_LL_H_Cut_In<Temp_Settings.V_Mains_AC_UL_L_Cut_In)&&(Temp_Settings.V_Mains_AC_LL_H_Cut_In>=Temp_Settings.V_Mains_AC_LL_L_Cut_Off))
@@ -445,7 +445,7 @@ void UART1_Recieved_Settings_Error_Check(void)
 	else
 		{
 			Othr.Recieved_Settings_Error = 1;
-			Othr.Recieved_Settings_Ok = 0;
+			Othr.Recieved_Settings_Ok    = 0;
 		}
 
 	if((Temp_Settings.V_Mains_AC_LL_L_Cut_Off<=Temp_Settings.V_Mains_AC_LL_H_Cut_In)&&(Temp_Settings.V_Mains_AC_LL_L_Cut_Off>0))
@@ -455,7 +455,7 @@ void UART1_Recieved_Settings_Error_Check(void)
 	else
 		{
 			Othr.Recieved_Settings_Error = 1;
-			Othr.Recieved_Settings_Ok = 0;
+			Othr.Recieved_Settings_Ok    = 0;
 		}
 
 	if((Temp_Settings.PV_Power_Limit<=3600)&&(Temp_Settings.PV_Power_Limit>=0))
@@ -465,7 +465,7 @@ void UART1_Recieved_Settings_Error_Check(void)
 	else
 		{
 			Othr.Recieved_Settings_Error = 1;
-			Othr.Recieved_Settings_Ok = 0;
+			Othr.Recieved_Settings_Ok    = 0;
 		}
 
 }
@@ -607,16 +607,15 @@ void UART1_Use_Received_Data_C(void)
 
 //	Calibration_Var = Calibration_Temp;
 	if((Calibration_Temp.Error==0)&&(Switch_Is_ON))
-	if((Calibration_Temp.Error==0))
 	{
 		Calibration_Var = Calibration_Temp;
 		Calibration_Temp.OK = 1;
-		Calibration_Var.OK = 1;
+		Calibration_Var.OK  = 1;
 	}
 	else
 	{
-		Calibration_Temp.OK = 0;
-		Calibration_Var.OK = 0;
+		Calibration_Temp.OK   = 0;
+		Calibration_Var.OK    = 0;
 		Calibration_Temp.Error=1;
 	}
 
@@ -629,22 +628,22 @@ void UART1_Use_Received_Data_M(void)
 
 void UART1_Use_Received_Data_R(void)
 {
-	Metering.Export_Energy=0;
-	Metering.Export_Energy_CT = 0;
-	Metering.Export_KWH =0;
-	Metering.Export_KWH_CT = 0;
-	Metering.Import_Energy=0;
-	Metering.Import_Energy_CT = 0;
-	Metering.Import_KWH =0;
-	Metering.Import_KWH_CT = 0;
+	Metering.Export_Energy      = 0;
+	Metering.Export_Energy_CT   = 0;
+	Metering.Export_KWH         = 0;
+	Metering.Export_KWH_CT      = 0;
+	Metering.Import_Energy      = 0;
+	Metering.Import_Energy_CT   = 0;
+	Metering.Import_KWH         = 0;
+	Metering.Import_KWH_CT      = 0;
 
-	Metering.PV_KWH  = 0;
-	Metering.PV_KWH_Sum  = 0;
+	Metering.PV_KWH             = 0;
+	Metering.PV_KWH_Sum         = 0;
 
-	Metering.Batt_AH_Out=0;
-	Metering.Batt_Ampere_Out_Sum = 0;
+	Metering.Batt_AH_Out        = 0;
+	Metering.Batt_Ampere_Out_Sum= 0;
 
-	Metering.Batt_AH_In = 0;
+	Metering.Batt_AH_In         = 0;
 	Metering.Batt_Ampere_In_Sum = 0;
 
     UART1_recvdata[0]=0;

@@ -114,3 +114,5 @@ void PV_Power_Unavailable_Detection(void);
 void Zero_Crossing_Detection_Counter_Fn(void);
 
 void Debug_Data_Storage_Fn(void);
+
+void PFC_Power_on_off(void);

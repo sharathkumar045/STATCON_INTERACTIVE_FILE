@@ -55,7 +55,7 @@
 #define UART1_Disable_Receive_Interrupt  USART2->CR1&=~LL_USART_CR1_RXNEIE
 #define UART1_Enable  USART2->CR1|=USART_CR1_UE
 #define UART1_Transmit_Not_Complete !(USART2->ISR&LL_USART_ISR_TC)
-#define UART1_Clear_Receive_Flag USART2->RQR|=USART_RQR_RXFRQ
+#define UART1_Clear_Receive_Flag USART1->RQR|=USART_RQR_RXFRQ
 #define UART1_Rec_Data_Register USART2->RDR
 #define UART1_Disable_Recv_INT USART2->CR1&=(~LL_USART_CR1_RXNEIE)
 
@@ -110,11 +110,11 @@
  extern struct U1_Send_Var UART1_Send_Var;
 
    
-      #define UART1_Send_Ack_Wait_Time_Limit 30000 // these many counts of interrupt time length
-      #define UART1_Transmit_Data_register USART2->TDR
-      #define UART1_TRx_Complete (USART2->ISR&0x00000040)
-      #define UART1_Expected_Ack_for_msg_A '0'
-      #define UART1_Send_Number_of_Msg_types 1 //if A ,B, C and X are the message types possible then this will be 4
+#define UART1_Send_Ack_Wait_Time_Limit 30000 // these many counts of interrupt time length
+#define UART1_Transmit_Data_register USART2->TDR
+#define UART1_TRx_Complete (USART2->ISR&0x00000040)
+#define UART1_Expected_Ack_for_msg_A '0'
+#define UART1_Send_Number_of_Msg_types 1 //if A ,B, C and X are the message types possible then this will be 4
 
      
  struct U1_Msg_Send_Reqt_Flags {

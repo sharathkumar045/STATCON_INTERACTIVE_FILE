@@ -56,6 +56,7 @@ void UART_Debugging_Populate_Txdata_Array_With_Message_Debug_Data(void)
 			UART_Debugging_Txdata[0] = 0; // sending case index numbers to identify the packets
 			UART_Debugging_Txdata[1] = 0; // sending case index numbers to identify the packets
 
+//			UART_Debugging_Var.Temp_Var = (int16_t)V_DC_Link_ADC;
 			UART_Debugging_Var.Temp_Var = (int16_t)Debug_Fast.A;
 
 			break;
@@ -114,6 +115,8 @@ void UART_Debugging_Populate_Txdata_Array_With_Message_Debug_Data(void)
 
 		UART_Debugging_Txdata[UART_Debugging_Var.Array_Index]    = 0x00FF & UART_Debugging_Var.Temp_Var;
 		UART_Debugging_Txdata[UART_Debugging_Var.Array_Index + 1]= (0xFF00 & UART_Debugging_Var.Temp_Var)>>8;
+//		UART_Debugging_Txdata[UART_Debugging_Var.Array_Index]    = 0x00FF & 0x0011;
+//		UART_Debugging_Txdata[UART_Debugging_Var.Array_Index + 1]= (0xFF00 & 0x1100)>>8;
 
 		UART_Debugging_Var.Array_Index = UART_Debugging_Var.Array_Index + 2;
 

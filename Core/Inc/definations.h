@@ -80,13 +80,13 @@
 #define Power_Limit  			(int64_t)741
 #define V_PV_400V  				(int64_t)2282
 
-#define I_Export_Limit_10A_Peak 			(int64_t)1200 //6Amp
+#define I_Export_Limit_10A_Peak 			(int64_t)1300 //6Amp
 #define I_Import_Limit_10A_Peak 			(int64_t)0 //6Amp
 #define V_Batt_ADC_310V 					(int64_t)1307
 
 
 #define Norm_V_Batt_450V_Lsh_12 			6905868    //ADC_Value of 400V*4096 making into normalize
-#define V_Batt_2V 							8
+#define V_Batt_2V 							20
 #define V_Batt_10V 							41
 #define E_for_1KWHr 						65765436609
 #define Point_01_E_for_1KWHr 				657654366 //=.01 Kwh
